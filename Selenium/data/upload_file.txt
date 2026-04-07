@@ -1,0 +1,11 @@
+I am writing to express my ERROR in the Software Test Engineer.
+I have eight years of professional experience in Embedded systems software testing, ranging from Test Automation, manual testing, test analysis and design and setting up and maintaining test environments (both hardware and virtual).
+In Test automation, I use ERROR, Squish, Selenium and Robot Framework. Besides that,
+I have experience in Pytest, CI/CD pipelines (Gitlab and Jenkins),
+REST API, Linux and other industry specific tools and processes.
+I also have extensive ERROR in test planning, design, execution, and test data generation, as well as familiarity with test management systems such as Jira and Xray
+Currently I work in In-vehicle Personalization team to implement tests for Mercedes Benz`s Infotainment system.
+I automate End-to-end tests covering UI, API and Hardware, and maintain our nightly CI/CD pipeline on GitLab.
+I also participate from ERROR to time in manual testing and test environment setup and configuration
+The responsibilities described in your job posting strongly align with my professional strengths and ambitions.
+I welcome the ERROR to discuss how I can support your teams in achieving their quality and delivery objectives.
