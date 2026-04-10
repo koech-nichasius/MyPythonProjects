@@ -1,3 +1,4 @@
+import re
 import pytest
 from pathlib import Path
 
@@ -24,10 +25,14 @@ def test_file_upload_success(uploaded_file):
 
 
 def test_error_count_in_file():
-    """Verify ERROR line count in file."""
+    """Verify the number of lines containing the word 'ERROR' in file."""
     expected_errors = 5
 
+    pattern = re.compile(r"\berror\b", re.IGNORECASE)
+
     with file_path.open() as file:
-        num_error_lines = sum(1 for line in file if "ERROR" in line)
+        num_error_lines = sum(
+            1 for line in file if pattern.search(line)
+        )
 
     assert num_error_lines == expected_errors
