@@ -14,8 +14,6 @@ class DatePicker(BasePage):
 
     def __init__(self, driver):
         super().__init__(driver)
-        self.date_switch: Tuple[str, str] = (By.CSS_SELECTOR,'th[class="datepicker-switch"]')
-
 
     @property
     def date_input(self) -> WebElement:
@@ -39,7 +37,7 @@ class DatePicker(BasePage):
 
     def is_calendar_displayed(self) -> bool:
         """Return True if Calendar is displayed, else False."""
-        return self.is_element_visible(self.date_switch)
+        return self.is_element_visible(Locator.date_switch)
 
     def tap_month_switch(self)-> None:
         """Tap on Month switch menu"""
@@ -58,14 +56,13 @@ class DatePicker(BasePage):
         """Return a list of all months in Calendar."""
         self.tap_month_switch()
 
-        all_months: List[WebElement] =self.driver.find_elements(Locator.all_months)
+        all_months: List[WebElement] =self.driver.find_elements(*Locator.all_months)
         return all_months
 
-    def get_dates(self):
+    def get_dates(self) -> List[WebElement] :
         """Get available dates for a selected month."""
         "data-date"
-        all_dates: List[WebElement] =self.driver.find_elements(By.XPATH,"//td[@class='day']")
-        return all_dates
+        return self.driver.find_elements(*Locator.all_dates)
 
     def select_date(self, date_val: int) -> None:
         """Select date."""
@@ -77,7 +74,3 @@ class DatePicker(BasePage):
         """Verify thet the selected date is set."""
         return int(self.date_input.get_attribute("value").split("/")[1]) == date_set
 
-
-    # def is_option_selected(self, option:str)-> bool:
-    #     """Verify Dropdown option is selected"""
-    #     return option in self.date_picker.first_selected_option.text

@@ -20,16 +20,24 @@ class Locator:
     submission_success = (By.ID, "message")
     submission_form = "submitted-form.html"
 
-    # File Upload
-    file_upload: str = "my-file"
+    # File Upload elements
+    file_upload: str = (By.NAME, "my-file")
 
-    # Slider
+    # Slider elements
     slider:str = "my-range"
 
     # Calendar elements
-    all_dates = (By.XPATH, "//td[contains(@class, 'day')]")
-    date_input = (By.CSS_SELECTOR, 'input[name="my-date"]')
+    all_dates = (
+        By.XPATH,
+        "//td[contains(@class,'day') "
+        "and not(contains(@class,'old')) "
+        "and not(contains(@class,'active')) "
+        "and not(contains(@class,'new'))]"
+    )
+    date_input = (By.CSS_SELECTOR, "input[name='my-date']")
     all_months = (By.XPATH, "//span[contains(concat(' ', normalize-space(@class), ' '), ' month ')]")
-    month_switch = (By.CSS_SELECTOR, 'th[class="datepicker-switch"]')
+    month_switch = (By.CSS_SELECTOR, "th[class='datepicker-switch']")
+    date_switch = (By.CSS_SELECTOR, 'th[class="datepicker-switch"]')
+
 
 
