@@ -3,14 +3,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium_project.interfaces.driver import IBasePage
+from selenium_project.interfaces.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
-class FileUpload(IBasePage):
+class FileUpload(BasePage):
     """"This class represents functions for the File Upload Functionality in Base Page."""
     def __init__(self, driver):
         super().__init__(driver)
+        self.wait=WebDriverWait(self.driver, 10)
 
     @property
     def file_upload(self) -> WebElement:
@@ -33,9 +34,8 @@ class FileUpload(IBasePage):
 
     def is_file_submitted(self) -> bool:
         """Verify Login successful window opened."""
-        # WebDriverWait(self.driver, 5).until(lambda d: d.current_url.startswith(Locator.submission_success))
 
-        WebDriverWait(self.driver, 5).until(
+        self.wait.until(
             EC.url_contains(Locator.submission_success)
         )
 

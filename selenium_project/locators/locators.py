@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+from selenium.webdriver.common.by import By
+
+
 @dataclass
 class Locator:
     """This dataclass contains locator names."""
@@ -18,5 +21,8 @@ class Locator:
 
     # Slider
     slider:str = "my-range"
+
+    # Web Table
+    month_switch=(By.CSS_SELECTOR, 'th[class="datepicker-switch"]')
 
 

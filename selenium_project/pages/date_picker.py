@@ -5,17 +5,18 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selenium_project.interfaces.driver import IBasePage
+from selenium_project.interfaces.base_page import BasePage
+from selenium_project.locators.locators import Locator
 
 
-class DatePicker(IBasePage):
+class DatePicker(BasePage):
     """"This class represents functions for the Login Page"""
 
     def __init__(self, driver):
         super().__init__(driver)
-        self.wait = WebDriverWait(driver, 10)
         self.date_input_element: Tuple[str, str] = By.CSS_SELECTOR, 'input[name="my-date"]'
-        self.date_switch: Tuple[str, str] = By.CSS_SELECTOR,'th[class="datepicker-switch"]'
+        self.date_switch: Tuple[str, str] = (By.CSS_SELECTOR,'th[class="datepicker-switch"]')
+
 
     @property
     def date_input(self) -> WebElement:
@@ -39,23 +40,17 @@ class DatePicker(IBasePage):
 
     def is_calendar_displayed(self) -> bool:
         """Return True if Calendar is displayed, else False."""
-        date_switch=self.wait.until(EC.visibility_of_element_located(self.date_switch))
-        return date_switch.is_displayed()
+        return self.is_element_visible(self.date_switch)
 
     def tap_month_switch(self)-> None:
         """Tap on Month switch menu"""
-        month_switch = self.wait.until(EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, 'th[class="datepicker-switch"]')
-        ))
-        month_switch.click()
+        self.wait.until(EC.visibility_of_element_located(Locator.month_switch)).click()
 
     def select_month(self, month_name: str) -> None:
         """
         Clicks a visible element like <span class="month">May</span> that equals the given month_name.
         """
         self.tap_month_switch()
-
-        # Exact, whitespace-normalized text match (case-sensitive)
         month_el = self.wait.until(EC.element_to_be_clickable(
             (By.XPATH, f"//span[contains(@class,'month') and normalize-space(text())='{month_name}']")))
         month_el.click()

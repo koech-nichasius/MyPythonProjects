@@ -1,11 +1,11 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium_project.interfaces.driver import IBasePage
+from selenium_project.interfaces.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
-class LoginPage(IBasePage):
+class LoginPage(BasePage):
     """"This class represents functions for the Login Page"""
     def __init__(self, driver):
         super().__init__(driver)

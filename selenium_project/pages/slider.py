@@ -1,10 +1,10 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium_project.interfaces.driver import IBasePage
+from selenium_project.interfaces.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
-class Slider(IBasePage):
+class Slider(BasePage):
     """"This class represents functions for the Login Page"""
 
     def __init__(self, driver):

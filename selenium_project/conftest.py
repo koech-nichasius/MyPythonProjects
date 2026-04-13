@@ -3,6 +3,7 @@ import logging
 from pytest import fixture
 from typing import Any, Generator
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 
@@ -32,7 +33,10 @@ def browser(request) -> str:
 @pytest.fixture
 def driver(browser):
     if browser == "chrome":
-        driver = webdriver.Chrome(service=ChromeService())
+        chrome_options = Options()
+        chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--disable-gpu")
+        driver = webdriver.Chrome(service=ChromeService(),options=chrome_options)
         driver.implicitly_wait(60)
     elif browser == "firefox":
         driver = webdriver.Firefox(service=FirefoxService())
