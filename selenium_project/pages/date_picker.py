@@ -60,14 +60,15 @@ class DatePicker(BasePage):
 
     def get_dates(self) -> List[WebElement] :
         """Get available dates for a selected month."""
-        "data-date"
         return self.driver.find_elements(*Locator.all_dates)
 
     def select_date(self, date_val: int) -> None:
-        """Select date."""
-        date = self.wait.until(EC.element_to_be_clickable(
-            (By.XPATH, f"//td[contains(@class,'day') and normalize-space(.)='{str(date_val)}']")))
-        date.click()
+        """Select a given calendar date."""
+        self.wait.until(
+            EC.element_to_be_clickable(
+                (By.XPATH, f"//td[contains(@class,'day') and text()='{date_val}']")
+            )
+        ).click()
 
     def verify_date_set(self, date_set: int) -> bool:
         """Verify thet the selected date is set."""
