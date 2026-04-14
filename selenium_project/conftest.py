@@ -2,7 +2,6 @@ import logging
 from pytest import fixture
 from typing import Any, Generator
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 
@@ -28,14 +27,17 @@ def browser(request) -> str:
 
 @fixture
 def driver(browser):
+    """
+    This fixture initializes a WebDriver for the specified browser,
+     and ensures proper cleanup after the test execution by quitting the driver.
+    """
     if browser == "chrome":
         driver = webdriver.Chrome(service=ChromeService())
-        driver.implicitly_wait(60)
     elif browser == "firefox":
         driver = webdriver.Firefox(service=FirefoxService())
-        driver.implicitly_wait(60)
     else:
         raise ValueError(f"Unsupported browser: {browser}")
+
     yield driver
     driver.quit()
 
