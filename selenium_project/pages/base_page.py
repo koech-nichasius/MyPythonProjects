@@ -1,19 +1,31 @@
+import logging
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from selenium_project.locators.locators import Locator
-
-TARGET_URL = "https://www.selenium.dev/selenium/web/web-form.html"
-SUBMIT_SUCCESS = "https://www.selenium.dev/selenium/web/submitted-form.html"
 
 class BasePage:
     """This class contains common functions."""
     def __init__(self,driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 20)
-        self.driver.get(TARGET_URL)
+
+    def launch_web_driver(self, target_url: str) -> None:
+        """Navigate to the target URL and ensure browser session is available."""
+        self.driver.get(target_url)
+
+        try:
+            self.wait.until(self.is_browser_launched)
+        except TimeoutException as err:
+            logging.error("Browser launching failed", exc_info=True)
+            raise RuntimeError("Browser launching failed") from err
+
+    def is_browser_launched(self, driver) -> bool:
+        """Check that the browser is launched."""
+        return self.driver.session_id and self.driver.window_handles
 
     @staticmethod
     def send_control_keys(element: WebElement, value:str) -> None:

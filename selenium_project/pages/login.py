@@ -1,5 +1,7 @@
 from selenium.webdriver.support import expected_conditions as EC
-from selenium_project.common_functions.base_page import BasePage
+
+from selenium_project.config import TARGET_URL
+from selenium_project.pages.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
@@ -7,9 +9,7 @@ class LoginPage(BasePage):
     """"This class contains functions for the Login Functionality"""
     def __init__(self, driver):
         super().__init__(driver)
-
-    def open_login_page(self, url:str)-> None:
-        self.driver.get(url)
+        self.launch_web_driver(TARGET_URL)
 
     def enter_user_name(self, user_name:str)-> None:
         """Enter the User Login  Name."""

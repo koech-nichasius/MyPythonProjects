@@ -55,7 +55,6 @@ def file_upload(driver) -> FileUpload:
 
 @fixture
 def date_picker(driver) -> DatePicker:
-    driver.refresh()
     return DatePicker(driver)
 
 @fixture

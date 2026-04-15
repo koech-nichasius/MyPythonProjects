@@ -4,7 +4,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 
-from selenium_project.common_functions.base_page import BasePage
+from selenium_project.config import TARGET_URL
+from selenium_project.pages.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
@@ -13,6 +14,7 @@ class DatePicker(BasePage):
 
     def __init__(self, driver):
         super().__init__(driver)
+        self.launch_web_driver(TARGET_URL)
 
     @property
     def date_input(self) -> WebElement:

@@ -1,7 +1,9 @@
 from pathlib import Path
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from selenium_project.common_functions.base_page import BasePage
+
+from selenium_project.config import TARGET_URL
+from selenium_project.pages.base_page import BasePage
 from selenium_project.locators.locators import Locator
 
 
@@ -9,6 +11,7 @@ class FileUpload(BasePage):
     """"This class contains functions for the File Upload Functionality."""
     def __init__(self, driver):
         super().__init__(driver)
+        self.launch_web_driver(TARGET_URL)
 
     @property
     def upload_file_btn(self) -> WebElement:
@@ -33,8 +36,5 @@ class FileUpload(BasePage):
     def is_file_submitted(self) -> bool:
         """Verify submission successful window opened."""
         message = self.wait.until(
-            EC.visibility_of_element_located(
-                Locator.submission_success
-            )
-        )
+            EC.visibility_of_element_located(Locator.submission_success))
         return message.is_displayed()
