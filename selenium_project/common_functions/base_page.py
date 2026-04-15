@@ -6,11 +6,10 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium_project.locators.locators import Locator
 
 TARGET_URL = "https://www.selenium.dev/selenium/web/web-form.html"
-
 SUBMIT_SUCCESS = "https://www.selenium.dev/selenium/web/submitted-form.html"
 
 class BasePage:
-    """This class represents functions for the Login Page"""
+    """This class contains common functions."""
     def __init__(self,driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 20)
@@ -18,7 +17,7 @@ class BasePage:
 
     @staticmethod
     def send_control_keys(element: WebElement, value:str) -> None:
-        """Select all pre-existing values."""
+        """Tap Control key + given value."""
         element.send_keys(Keys.CONTROL, value)
 
     @staticmethod
@@ -26,25 +25,24 @@ class BasePage:
         """Tap backspace."""
         element.send_keys(Keys.BACKSPACE)
 
-    def wait_until_element_visible(self, widget) -> None:
-        """Wait until element is vivible."""
-        self.wait.until(EC.visibility_of_element_located(widget))
+    def wait_until_element_visible(self, element) -> None:
+        """Wait until element is visible."""
+        self.wait.until(EC.visibility_of_element_located(element))
 
     def is_element_visible(self,element) -> bool:
         """Return True if element is displayed, else False."""
-        return self.wait.until(EC.visibility_of_element_located(element)).is_displayed()
+        return self.wait.until(
+            EC.visibility_of_element_located(element)).is_displayed()
 
     def submission_success(self)-> bool:
-        """Verify login success."""
+        """Verify submission success."""
         message = self.wait.until(
-            EC.visibility_of_element_located(
-                Locator.submission_success
-            )
-        )
+            EC.visibility_of_element_located(Locator.submission_success))
         return message.is_displayed()
 
     def click_element(self,element):
-        """Function handles stale elements. Fresh element look-upo is initiated incase it is stale."""
+        """Function handles stale elements. Fresh element
+        look-upo is initiated incase it is stale."""
         try:
             element.click()
         except StaleElementReferenceException:
