@@ -1,9 +1,7 @@
-from typing import Any, Generator
-
+from typing import Generator
 from pytest import fixture
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.webdriver import WebDriver
 
