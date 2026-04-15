@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
+
 from selenium_project.config import BASE_URL
 from selenium_project.pages.base_page import BasePage
 from selenium_project.locators.locators import Locator
@@ -12,11 +14,11 @@ class Slider(BasePage):
         self.launch_web_driver(BASE_URL)
 
     @property
-    def slider(self):
+    def slider(self) -> WebElement:
         """Slider WebElement."""
         return self.driver.find_element(By.NAME, Locator.slider)
 
-    def set_slider_value(self, value: int):
+    def set_slider_value(self, value: int)-> None:
         """Set actual slider value. Move the slider {offset} pixels to the right"""
         self.driver.execute_script(
             """
@@ -25,8 +27,7 @@ class Slider(BasePage):
             arguments[0].dispatchEvent(new Event('change'));
             """,
             self.slider,
-            value
-        )
+            value )
 
     def get_slider_min_value(self)-> int:
         """Get slider min value."""

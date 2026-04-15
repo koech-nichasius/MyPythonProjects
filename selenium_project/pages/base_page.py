@@ -51,11 +51,11 @@ class BasePage:
             EC.visibility_of_element_located(Locator.submission_success))
         return message.is_displayed()
 
-    def click_element(self,element):
+    def click_element(self,element) -> None:
         """Function handles stale elements. Fresh element
         look-upo is initiated incase it is stale."""
         try:
             element.click()
         except StaleElementReferenceException:
-            element = self.driver.find_element(*element)
+            element = self.driver.find_element(element)
             element.click()

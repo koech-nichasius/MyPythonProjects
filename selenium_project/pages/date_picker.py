@@ -55,7 +55,6 @@ class DatePicker(BasePage):
     def get_all_months(self)-> list[WebElement]:
         """Return a list of all months in Calendar."""
         self.tap_month_switch()
-
         all_months: List[WebElement] =self.driver.find_elements(*Locator.all_months)
         return all_months
 
@@ -65,11 +64,8 @@ class DatePicker(BasePage):
 
     def select_date(self, date_val: int) -> None:
         """Select a given calendar date."""
-        self.wait.until(
-            EC.element_to_be_clickable(
-                (By.XPATH, f"//td[contains(@class,'day') and text()='{date_val}']")
-            )
-        ).click()
+        self.wait.until(EC.element_to_be_clickable(
+            (By.XPATH, f"//td[contains(@class,'day') and text()='{date_val}']"))).click()
 
     def verify_date_set(self, date_set: int) -> bool:
         """Verify thet the selected date is set."""

@@ -69,9 +69,8 @@ def login(driver) -> LoginPage:
     """Instantiate LoginPage class."""
     return LoginPage(driver)
 
-@fixture(
-    params=['Jan', 'Feb', 'Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    ids=lambda c: c)
-def month(request):
+@fixture(params=['Jan', 'Feb', 'Mar','Apr', 'May', 'Jun',
+                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ids=lambda c: c)
+def month(request) -> str:
     """Fixture returns Calendar months one at a time.'"""
     return request.param
