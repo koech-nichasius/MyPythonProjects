@@ -1,10 +1,7 @@
-import logging
 from pytest import fixture
-from typing import Any, Generator
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
-
 from selenium_project.pages.login import LoginPage
 from selenium_project.pages.dropdown import DropDownPage
 from selenium_project.pages.date_picker import DatePicker
@@ -24,6 +21,7 @@ def pytest_addoption(parser):
 
 @fixture
 def browser(request) -> str:
+    """Get terminal option for which browser to use."""
     return request.config.getoption("--browser")
 
 @fixture
@@ -43,37 +41,37 @@ def driver(browser):
 
 @fixture
 def slider(driver) -> Slider:
+    """Instantiate Slider class."""
     return Slider(driver)
 
 @fixture
-def dropdown_page(driver) -> DropDownPage:
+def drop_down(driver) -> DropDownPage:
+    """Instantiate DropDownPage class."""
     return DropDownPage(driver)
 
 @fixture
 def file_upload(driver) -> FileUpload:
+    """Instantiate FileUpload class."""
     return FileUpload(driver)
 
 @fixture
 def date_picker(driver) -> DatePicker:
+    """Instantiate DatePicker class."""
     return DatePicker(driver)
 
 @fixture
 def web_table(driver) -> WebTable:
+    """Instantiate WebTable class."""
     return WebTable(driver)
 
 @fixture
-def login_page()-> Generator[LoginPage, Any, None]:
-    """This fixture instantiates the login page."""
-    logging.debug("Initializing Chrome WebDriver")
-    chrome_driver = webdriver.Chrome()
-    login = LoginPage(chrome_driver)
-    logging.debug("Starting test execution")
-    yield login
-    chrome_driver.close()
+def login(driver) -> LoginPage:
+    """Instantiate LoginPage class."""
+    return LoginPage(driver)
 
 @fixture(
     params=['Jan', 'Feb', 'Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     ids=lambda c: c)
 def month(request):
-    """, 'Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'"""
+    """Fixture returns Calendar months one at a time.'"""
     return request.param
