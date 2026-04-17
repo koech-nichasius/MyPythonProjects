@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 @dataclass
 class Locator:
     """This dataclass contains locator names."""
+    body_element = (By.TAG_NAME, "body")
     # Login elements
     user_name_input = (By.NAME, 'my-text')
     password_input =  (By.NAME, "my-password")

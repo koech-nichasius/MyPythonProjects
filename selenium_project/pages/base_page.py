@@ -1,5 +1,5 @@
 import logging
-from typing import Literal, Tuple
+from typing import Tuple
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
@@ -8,20 +8,6 @@ from selenium.common.exceptions import StaleElementReferenceException, TimeoutEx
 from selenium_project.locators.locators import Locator
 
 
-ElementLocator = Tuple[
-    Literal[
-        "id",
-        "xpath",
-        "link text",
-        "partial link text",
-        "name",
-        "tag name",
-        "class name",
-        "css selector",
-    ],
-    str,
-]
-
 class BasePage:
     """This class contains common functions."""
     def __init__(self,driver):
@@ -29,46 +15,31 @@ class BasePage:
         self.wait = WebDriverWait(driver, 20)
 
     def launch_web_driver(self, target_url: str) -> None:
-        """Navigate to the target URL and ensure browser session is available."""
+        """Navigate to the target URL and wait until DOM is available."""
         self.driver.get(target_url)
-
         try:
-            self.wait.until(self.is_browser_launched)
+            self.wait_present(Locator.body_element)
         except TimeoutException as err:
-            logging.error("Browser launching failed", exc_info=True)
-            raise RuntimeError("Browser launching failed") from err
+            logging.error("Page loading failed", exc_info=True)
+            raise RuntimeError("Page loading failed") from err
 
-    def is_browser_launched(self, driver) -> bool:
-        """Check that the browser is launched."""
-        return self.driver.session_id and self.driver.window_handles
-
-    @staticmethod
-    def send_control_keys(element: WebElement, value:str) -> None:
-        """Tap Control key + given value."""
-        element.send_keys(Keys.CONTROL, value)
-
-    @staticmethod
-    def tap_backspace(element: WebElement) -> None:
-        """Tap backspace."""
-        element.send_keys(Keys.BACKSPACE)
-
-    def wait_visible(self, locator: ElementLocator) -> WebElement:
+    def wait_visible(self, locator: Tuple[str, str]) -> WebElement:
         """Wait until element is visible."""
         return self.wait.until(EC.visibility_of_element_located(locator))
 
-    def wait_clickable(self, locator: ElementLocator) -> WebElement:
+    def wait_clickable(self, locator: Tuple[str, str]) -> WebElement:
         """Wait until element is clickable."""
         return self.wait.until(EC.element_to_be_clickable(locator))
 
-    def wait_present(self, locator: ElementLocator) -> WebElement:
+    def wait_present(self, locator: Tuple[str, str]) -> WebElement:
         """Wait until element is present."""
-        return self.wait.until(EC.element_to_be_clickable(locator))
+        return self.wait.until(EC.presence_of_element_located(locator))
 
-    def wait_not_visible(self, locator: ElementLocator) -> WebElement:
+    def wait_not_visible(self, locator: Tuple[str, str]) -> WebElement:
         """Wait until element is invisible."""
         return self.wait.until(EC.invisibility_of_element(locator))
 
-    def is_element_visible(self, element:ElementLocator) -> bool:
+    def is_element_visible(self, element:Tuple[str, str]) -> bool:
         """Return True if element is displayed, else False."""
         return self.wait_visible(element).is_displayed()
 
@@ -85,3 +56,13 @@ class BasePage:
         except StaleElementReferenceException:
             element = self.driver.find_element(element)
             element.click()
+
+    @staticmethod
+    def send_control_keys(element: WebElement, value:str) -> None:
+        """Tap Control key + given value."""
+        element.send_keys(Keys.CONTROL, value)
+
+    @staticmethod
+    def tap_backspace(element: WebElement) -> None:
+        """Tap backspace."""
+        element.send_keys(Keys.BACKSPACE)
