@@ -1,18 +1,18 @@
 import logging
-from typing import Tuple
+from typing import Tuple, Callable, Union
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 
 LocatorType = Tuple[str, str]
 
-class BasePage:
-    """Base class for all Page Objects."""
+class Common:
+    """Common class for all Page Objects."""
 
-    def __init__(self, driver: WebDriver, timeout: int = 10):
+    def __init__(self, driver: WebDriver, timeout):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, timeout)
 
@@ -26,20 +26,27 @@ class BasePage:
             raise RuntimeError(f"Failed to load page: {url}") from err
 
     def wait_present(self, locator: LocatorType) -> WebElement:
+        """Wait for element to be visible."""
         return self.wait.until(EC.presence_of_element_located(locator))
 
     def wait_visible(self, locator: LocatorType) -> WebElement:
+        """Wait for element to be visible."""
         return self.wait.until(EC.visibility_of_element_located(locator))
 
+    def wait_not_visible(self, locator: LocatorType) ->  WebElement:
+        """Wait for element to be invisible."""
+        return self.wait.until(EC.invisibility_of_element_located(locator))
+
     def wait_clickable(self, locator: LocatorType) -> WebElement:
+        """Wait for element to be clickable."""
         return self.wait.until(EC.element_to_be_clickable(locator))
 
-    def wait_not_visible(self, locator: LocatorType) ->  WebElement:
-        kk = self.wait.until(EC.invisibility_of_element_located(locator))
-        return kk
+    def wait_for_dynamic_element_clickable(self, locator):
+        """Wait for dynamic element to be clickable."""
+        self.wait.until(self.element_clickable_with_retry(locator))
 
-    def click(self, locator: LocatorType) -> None:
-        """Click element safely."""
+    def wait_and_click(self, locator: LocatorType) -> None:
+        """Wait for element to be clickable and click."""
         self.wait_clickable(locator).click()
 
     def is_element_visible(self, locator: LocatorType) -> bool:
@@ -64,3 +71,21 @@ class BasePage:
     @staticmethod
     def tap_backspace(element: WebElement) -> None:
         element.send_keys(Keys.BACKSPACE)
+
+    @staticmethod
+    def element_clickable_with_retry(
+            locator: Tuple[str, str]) -> Callable[[WebDriver], Union[WebElement, bool]]:
+        """Wait for element for known dynamic DOM element  to be clickable. Retry is element is stale."""
+
+        def _wait(driver):
+            try:
+                logging.info(f"Wait for {locator} to be clickable")
+                element: WebElement = driver.find_element(*locator)
+                if element.is_displayed() and element.is_enabled():
+                    return element
+                return False
+            except StaleElementReferenceException:
+                logging.info(f"{locator} not clickable yet.")
+                return False
+
+        return _wait

@@ -3,11 +3,11 @@ from typing import List
 from selenium.common import NoSuchElementException
 from selenium.webdriver.support.select import Select
 from selenium_project.config import BASE_URL
-from selenium_project.pages.base_page import BasePage
+from selenium_project.helper_functions.common_functions import Common
 from selenium_project.locators.locators import Locator
 
 
-class DropDownPage(BasePage):
+class DropDownPage(Common):
     """Page Object for DropDownPage functionality."""
     def __init__(self, driver):
         super().__init__(driver)

@@ -1,10 +1,10 @@
 from typing import List
 from selenium.webdriver.remote.webelement import WebElement
 from selenium_project.config import WEB_TABLE_URL
+from selenium_project.helper_functions.common_functions import Common
 from selenium_project.locators.locators import Locator
-from selenium_project.pages.base_page import BasePage
 
-class WebTable(BasePage):
+class WebTable(Common):
     """Page Object for WebTable functionality."""
 
     def __init__(self, driver):

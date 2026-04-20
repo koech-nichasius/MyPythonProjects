@@ -1,10 +1,10 @@
 from selenium.webdriver.remote.webelement import WebElement
 from selenium_project.config import BASE_URL
-from selenium_project.pages.base_page import BasePage
+from selenium_project.helper_functions.common_functions import Common
 from selenium_project.locators.locators import Locator
 
 
-class LoginPage(BasePage):
+class LoginPage(Common):
     """Page Object for Login functionality."""
     def __init__(self, driver):
         super().__init__(driver)
@@ -44,4 +44,7 @@ class LoginPage(BasePage):
         self.wait.until(lambda d: Locator.submission_form in d.current_url)
         return  Locator.submission_form in self.driver.current_url
 
-
+    def submission_success(self)-> bool:
+        """Verify submission success."""
+        message = self.wait_visible(Locator.submission_success)
+        return message.is_displayed()

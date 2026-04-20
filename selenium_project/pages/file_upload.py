@@ -1,11 +1,11 @@
 from pathlib import Path
 from selenium.webdriver.remote.webelement import WebElement
 from selenium_project.config import BASE_URL
-from selenium_project.pages.base_page import BasePage
+from selenium_project.helper_functions.common_functions import Common
 from selenium_project.locators.locators import Locator
 
 
-class FileUpload(BasePage):
+class FileUpload(Common):
     """Page Object for FileUpload functionality."""
     def __init__(self, driver):
         super().__init__(driver)

@@ -2,11 +2,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 from selenium_project.config import BASE_URL
-from selenium_project.pages.base_page import BasePage
+from selenium_project.helper_functions.common_functions import Common
 from selenium_project.locators.locators import Locator
 
 
-class Slider(BasePage):
+class Slider(Common):
     """Page Object for Slider functionality."""
 
     def __init__(self, driver):
