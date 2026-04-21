@@ -3,30 +3,32 @@ from typing import Any
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
+class StatusCodes:
+    """This class defines API Test data."""
+    OK: int = 200
+    Created: int = 201
+    Accepted: int = 202
+    Deleted: int = 204
+
+
+
+@dataclass(frozen=True)
 class ApiTestData:
     """This class defines API Test data."""
-    id: str
-    name: str
-    data: None | str | dict[str, Any]
-    base_url = "https://api.restful-api.dev/"
+    id: int
+    email: str
+    first_name: str
+    last_name: str
+    avatar: None | str | dict[str, Any]
 
-api_test_data = [
-    ApiTestData('1', 'Google Pixel 6 Pro', {
-            "color": "Cloudy White",
-            "capacity": "128 GB"
-        }),
-    ApiTestData('2', 'Apple iPhone 12 Mini, 256GB, Blue', None),
-    ApiTestData('3', 'Apple iPhone 12 Pro Max', {
-            "color": "Cloudy White",
-            "capacity GB": 512
-        }),
-    ApiTestData('4', 'Apple iPhone 11, 64GB', {
-            "price": 389.99,
-            "color": "Purple"
-        }),
-    ApiTestData('5', 'Samsung Galaxy Z Fold2', {'color': 'Brown', 'price': 689.99}),
-    ApiTestData('6', 'Apple AirPods', {
-            "generation": "3rd",
-            "price": 120
-        }),
-]
+payload = {
+  "name": "Nichasius",
+  "job": "QA Engineer"}
+
+valid_api_test_data = [
+    ApiTestData(
+        id=1,
+        email="george.bluth@dotesthere.com",
+        first_name="George",
+        last_name="Bluth",
+        avatar="https://dotesthere.com/img/faces/1-image.jpg")]
