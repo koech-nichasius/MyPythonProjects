@@ -1,6 +1,6 @@
+from datetime import datetime
 from typing import List
-from selenium.common import StaleElementReferenceException
-from selenium.webdriver.common.by import By
+from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium_project.common_functions.common_functions import Common
 from selenium_project.test_data.locators import Locator
@@ -15,12 +15,12 @@ class DatePicker(Common):
         self.load_page(TestData.base_url)
 
     @property
-    def month_switch(self):
+    def month_switch(self) -> WebElement:
         """Returns the month switch element"""
         return self.driver.find_element(*Locator.month_switch)
 
     @property
-    def next_month(self):
+    def next_month(self) -> WebElement:
         """Returns the next element"""
         return self.driver.find_element(*Locator.next_month)
 
@@ -48,7 +48,8 @@ class DatePicker(Common):
 
     def tap_month_switch(self)-> None:
         """Tap on Month switch menu"""
-        self.month_switch.click()
+        if not self.is_element_visible(Locator.all_months):
+            self.month_switch.click()
 
     def tap_next_icon(self)-> None:
         """Tap on Next icon."""
@@ -58,23 +59,21 @@ class DatePicker(Common):
         """Tap on Prev icon."""
         self.prev_month.click()
 
-    def navigate_to_next_month(self,target_month)-> None:
+    def navigate_to_month(self, target_month: str) -> None:
         """Navigate to specified month via date picker switch."""
-        while True:
-            header = self.driver.find_element(*Locator.month_switch).text
-            if header.startswith(target_month):
-                break
+        for _ in range(len(TestData.calendar_months)):
+            if self.month_switch.text.startswith(target_month):
+                return
             self.tap_next_icon()
+        raise AssertionError(f"Month '{target_month}' not reached")
 
     def select_month(self, month_name: str) -> None:
-        """
-        Clicks a visible element like <span class="month">May</span> that equals the given month_name.
-        """
         self.tap_month_switch()
-        self.wait_clickable(
-            (By.XPATH, f"//span[contains(@class,'month') and normalize-space(text())='{month_name}']")
-        ).click()
-
+        month_locator = Locator.month_by_name(month_name)
+        try:
+            self.wait_clickable(month_locator).click()
+        except TimeoutException:
+            raise AssertionError(f"Month '{month_name}' not found")
 
     def get_all_months(self)-> list[WebElement]:
         """Return a list of all months in Calendar."""
@@ -87,19 +86,33 @@ class DatePicker(Common):
 
     def select_date(self, date_val: int) -> None:
         """Select a given calendar date. Hanles stale elements in case of refresh."""
-        xpath = f"//td[contains(@class,'day') and normalize-space()='{date_val}']"
-        for _ in range(3):
+        date = Locator.date_by_value(date_val)
+        for trial in range(3):
             try:
-                self.wait_clickable((By.XPATH, xpath)).click()
+                self.wait_clickable(date).click()
                 return
             except StaleElementReferenceException:
-                continue
-        raise AssertionError(f"Date {date_val} could not be selected")
+                if trial == 2:
+                    raise
+
+    def navigate_to_year(self, year):
+        """Select a year."""
+        ...
+
+    def select_date_month_year(self, year: int, month: str, day: int) -> None:
+        """Set date, month and year."""
+        self.navigate_to_year(year)
+        self.select_month(month)
+        self.select_date(day)
 
     def verify_date_set(self, date_set: int) -> bool:
         """Verify thet the selected date is set."""
-        return int(self.date_input.get_attribute("value").split("/")[1]) == date_set
+        date_val = self.date_input.get_attribute("value")
+        parsed = datetime.strptime(date_val, "%m/%d/%Y")
+        return parsed.day == date_set
 
     def verify_month_selected(self, month: str) -> bool:
         """Verify thet the selected month is set."""
         return month in self.month_switch.text
+
+
