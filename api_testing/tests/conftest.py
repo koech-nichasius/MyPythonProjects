@@ -1,8 +1,10 @@
 import os
 import yaml
 import pytest
-from api.base_client import BaseClient
-from api.users_api import UsersAPI
+
+from api_testing.api.base_client import BaseClient
+from api_testing.api.products_api import ProductsAPI
+from api_testing.api.users_api import UsersAPI
 
 @pytest.fixture(scope="session")
 def base_url():
@@ -37,4 +39,7 @@ def users_api(api_client):
     """Client here is a BaseClient object."""
     return UsersAPI(api_client)
 
-
+@pytest.fixture
+def products_api(api_client):
+    """Client here is a BaseClient object."""
+    return ProductsAPI(api_client)
