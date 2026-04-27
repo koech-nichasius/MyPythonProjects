@@ -1,20 +1,28 @@
+from typing import Tuple
 from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
-def by_xpath(item: str):
-    return By.XPATH, f"{item}"
+LocatorType = Tuple[str, str]
 
-def by_id(item: str):
-    return By.ID, f"{item}"
+def by_xpath(element: str) -> LocatorType:
+    """Find element by XPATH."""
+    return By.XPATH, f"{element}"
 
-def by_name(item: str):
-    return By.NAME, f"{item}"
+def by_id(element: str) -> LocatorType:
+    """Find element by ID."""
+    return By.ID, f"{element}"
 
-def by_tag_name(item: str):
-    return By.TAG_NAME, f"{item}"
+def by_name(element: str) -> LocatorType:
+    """Find element by NAME."""
+    return By.NAME, f"{element}"
 
-def by_css(item: str):
-    return By.CSS_SELECTOR, f"{item}"
+def by_tag_name(element: str) -> LocatorType:
+    """Find element by TAG NAME."""
+    return By.TAG_NAME, f"{element}"
+
+def by_css(element: str) -> LocatorType:
+    """Find element by CSS_SELECTOR."""
+    return By.CSS_SELECTOR, f"{element}"
 
 @dataclass
 class CommonLocator:
@@ -50,22 +58,22 @@ class CommonLocator:
     next_month = by_xpath("//th[@class='next']")
     prev_month = by_xpath("//th[@class='prev']")
     month_switch = by_css("th[class='datepicker-switch']")
-    all_months = by_xpath("//span[contains(concat(' ', normalize-space(@class), ' '), ' month ')]")
+    all_months = by_xpath(
+        "//span[contains(concat(' ', normalize-space(@class), ' '), ' month ')]")
 
     @staticmethod
-    def month_by_name(month_name: str):
+    def month_by_name(month_name: str) -> LocatorType:
         return by_xpath(
             f"//span[contains(@class,'month') and normalize-space(text())='{month_name}']")
 
     @staticmethod
-    def date_by_value(date_val: int):
+    def date_by_value(date_val: int) -> LocatorType:
         return by_xpath(
             f"//td[contains(@class,'day') and normalize-space()='{date_val}']")
 
 @dataclass
 class WebTableLocator:
     """This dataclass contains Web Table locators."""
-    # Web Table elements
     table = by_xpath("//form//table")
     table_headers = by_xpath(".//tr/th")
     table_rows = by_xpath(".//tbody/tr")
