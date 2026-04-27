@@ -59,17 +59,20 @@ class CommonLocator:
     prev_month = by_xpath("//th[@class='prev']")
     month_switch = by_css("th[class='datepicker-switch']")
     all_months = by_xpath(
-        "//span[contains(concat(' ', normalize-space(@class), ' '), ' month ')]")
+        "//span[contains(concat(' ', "
+        "normalize-space(@class), ' '), ' month ')]")
 
     @staticmethod
     def month_by_name(month_name: str) -> LocatorType:
         return by_xpath(
-            f"//span[contains(@class,'month') and normalize-space(text())='{month_name}']")
+            f"//span[contains(@class,'month') "
+            f"and normalize-space(text())='{month_name}']")
 
     @staticmethod
     def date_by_value(date_val: int) -> LocatorType:
         return by_xpath(
-            f"//td[contains(@class,'day') and normalize-space()='{date_val}']")
+            f"//td[contains(@class,'day') "
+            f"and normalize-space()='{date_val}']")
 
 @dataclass
 class WebTableLocator:
