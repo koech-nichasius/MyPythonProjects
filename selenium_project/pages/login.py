@@ -1,10 +1,11 @@
 from selenium.webdriver.remote.webelement import WebElement
-from selenium_project.common_functions.common_functions import CommonFunctions
+
+from selenium_project.core.base_page import BasePage
 from selenium_project.resources.locators import CommonLocator
 from selenium_project.resources.selenium_data import SeleniumData
 
 
-class LoginPage(CommonFunctions):
+class LoginPage(BasePage):
     """Page Object for Login functionality."""
     def __init__(self, driver):
         super().__init__(driver)

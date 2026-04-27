@@ -9,12 +9,11 @@ from selenium.common.exceptions import TimeoutException, StaleElementReferenceEx
 
 LocatorType = Tuple[str, str]
 
-class CommonFunctions:
-    """CommonFunctions class for all Page Objects."""
-
+class BasePage:
+    """Base Page functionalities."""
     def __init__(self, driver: WebDriver, timeout=10):
         self.driver = driver
-        self.wait = WebDriverWait(self.driver, timeout)
+        self.wait = WebDriverWait(driver, timeout)
 
     def load_page(self, url: str) -> None:
         """Navigate to URL and wait until DOM is loaded."""
@@ -27,23 +26,28 @@ class CommonFunctions:
 
     def wait_present(self, locator: LocatorType) -> WebElement:
         """Wait for element to be visible."""
-        return self.wait.until(EC.presence_of_element_located(locator))
+        return self.wait.until(EC.presence_of_element_located(locator),
+                               message=f"Element {locator} not present")
 
     def wait_visible(self, locator: LocatorType) -> WebElement:
         """Wait for element to be visible."""
-        return self.wait.until(EC.visibility_of_element_located(locator))
+        return self.wait.until(EC.visibility_of_element_located(locator),
+                               message=f"Element {locator} not visible")
 
     def wait_not_visible(self, locator: LocatorType) ->  WebElement:
         """Wait for element to be invisible."""
-        return self.wait.until(EC.invisibility_of_element_located(locator))
+        return self.wait.until(EC.invisibility_of_element_located(locator),
+                               message=f"Element {locator} still visible")
 
     def wait_clickable(self, locator: LocatorType) -> WebElement:
         """Wait for element to be clickable."""
-        return self.wait.until(EC.element_to_be_clickable(locator))
+        return self.wait.until(EC.element_to_be_clickable(locator),
+                               message=f"Element {locator} not clickable")
 
     def wait_for_dynamic_element_clickable(self, locator: LocatorType):
         """Wait for dynamic element to be clickable."""
-        self.wait.until(self.element_clickable_with_retry(locator))
+        self.wait.until(self.element_clickable_with_retry(locator),
+                        message=f"Element {locator} not clickable after retries.")
 
     def wait_and_click(self, locator: LocatorType) -> None:
         """Wait for element to be clickable and click."""

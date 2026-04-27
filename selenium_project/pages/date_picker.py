@@ -2,12 +2,13 @@ from datetime import datetime
 from typing import List
 from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
-from selenium_project.common_functions.common_functions import CommonFunctions
+
+from selenium_project.core.base_page import BasePage
 from selenium_project.resources.locators import CommonLocator
 from selenium_project.resources.selenium_data import SeleniumData
 
 
-class DatePicker(CommonFunctions):
+class DatePicker(BasePage):
     """Page Object for DatePicker functionality."""
 
     def __init__(self, driver):

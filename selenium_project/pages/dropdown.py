@@ -2,12 +2,13 @@ import logging
 from typing import List
 from selenium.common import NoSuchElementException
 from selenium.webdriver.support.select import Select
-from selenium_project.common_functions.common_functions import CommonFunctions
+
+from selenium_project.core.base_page import BasePage
 from selenium_project.resources.locators import CommonLocator
 from selenium_project.resources.selenium_data import SeleniumData
 
 
-class DropDownPage(CommonFunctions):
+class DropDownPage(BasePage):
     """Page Object for DropDownPage functionality."""
     def __init__(self, driver):
         super().__init__(driver)
