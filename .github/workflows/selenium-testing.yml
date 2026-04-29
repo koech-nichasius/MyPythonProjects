@@ -23,7 +23,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable firefox
     - name: Run Selenium tests
-      run: pytest  --html=report.html --self-contained-html
+      run: pytest  selenium_project/tests/ --html=report.html --self-contained-html
+      env:
+          PYTHONPATH: ${{ github.workspace }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
