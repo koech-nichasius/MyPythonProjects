@@ -1,9 +1,9 @@
 from typing import List
 from selenium.webdriver.remote.webelement import WebElement
 
-from selenium_api_project.pages.base_page import BasePage
-from selenium_api_project.resources.locators import WebTableLocator
-from selenium_api_project.resources.selenium_data import SeleniumData
+from selenium_project.pages.base_page import BasePage
+from selenium_project.resources.locators import WebTableLocator
+from selenium_project.resources.selenium_data import SeleniumData
 
 
 class WebTable(BasePage):

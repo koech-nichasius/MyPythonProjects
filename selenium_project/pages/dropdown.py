@@ -3,9 +3,9 @@ from typing import List
 from selenium.common import NoSuchElementException
 from selenium.webdriver.support.select import Select
 
-from selenium_api_project.pages.base_page import BasePage
-from selenium_api_project.resources.locators import CommonLocator
-from selenium_api_project.resources.selenium_data import SeleniumData
+from selenium_project.pages.base_page import BasePage
+from selenium_project.resources.locators import CommonLocator
+from selenium_project.resources.selenium_data import SeleniumData
 
 
 class DropDownPage(BasePage):

@@ -6,13 +6,13 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selenium_api_project.resources.selenium_data import SeleniumData
-from selenium_api_project.pages.login import LoginPage
-from selenium_api_project.pages.dropdown import DropDownPage
-from selenium_api_project.pages.date_picker import DatePicker
-from selenium_api_project.pages.file_upload import FileUpload
-from selenium_api_project.pages.slider import Slider
-from selenium_api_project.pages.web_table import WebTable
+from selenium_project.resources.selenium_data import SeleniumData
+from selenium_project.pages.login import LoginPage
+from selenium_project.pages.dropdown import DropDownPage
+from selenium_project.pages.date_picker import DatePicker
+from selenium_project.pages.file_upload import FileUpload
+from selenium_project.pages.slider import Slider
+from selenium_project.pages.web_table import WebTable
 
 
 def pytest_addoption(parser):
@@ -20,7 +20,7 @@ def pytest_addoption(parser):
         "--on-browser",
         action="store",
         default="chrome",
-        help="Browser to run test_ui against"
+        help="Browser to run tests against"
     )
 
 
