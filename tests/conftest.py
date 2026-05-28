@@ -6,13 +6,13 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selenium_project.resources.selenium_data import SeleniumData
-from selenium_project.pages.login import LoginPage
-from selenium_project.pages.dropdown import DropDownPage
-from selenium_project.pages.date_picker import DatePicker
-from selenium_project.pages.file_upload import FileUpload
-from selenium_project.pages.slider import Slider
-from selenium_project.pages.web_table import WebTable
+from resources.selenium_data import SeleniumData
+from pages.login import LoginPage
+from pages.dropdown import DropDownPage
+from pages.date_picker import DatePicker
+from pages.file_upload import FileUpload
+from pages.slider import Slider
+from pages.web_table import WebTable
 
 
 def pytest_addoption(parser):

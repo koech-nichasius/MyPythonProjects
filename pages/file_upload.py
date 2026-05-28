@@ -1,9 +1,9 @@
 from pathlib import Path
 from selenium.webdriver.remote.webelement import WebElement
 
-from selenium_project.pages.base_page import BasePage
-from selenium_project.resources.locators import CommonLocator
-from selenium_project.resources.selenium_data import SeleniumData
+from pages.base_page import BasePage
+from resources.locators import CommonLocator
+from resources.selenium_data import SeleniumData
 
 
 class FileUpload(BasePage):

@@ -1,6 +1,6 @@
 import random
 import pytest
-from selenium_project.resources.selenium_data import SeleniumData
+from resources.selenium_data import SeleniumData
 
 
 @pytest.mark.ui
