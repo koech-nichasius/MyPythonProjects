@@ -34,8 +34,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y chromium-browser
           
-      - name: Run tests
-        run: pytest -v tests/
+      - name: Run tests (parallel)
+        run: |
+          mkdir -p results
+          pytest -v tests/ -n auto --dist=loadscope \
+            --tracing=retain-on-failure \
+            --junitxml=results/results.xml \
+            --html=results/report.html \
+            --self-contained-html
 
       - name: Upload raw test data
         if: always()
