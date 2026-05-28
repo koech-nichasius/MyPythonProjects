@@ -2,17 +2,16 @@ import random
 from typing import Generator, Any
 from pytest import fixture
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.chrome.options import Options
 
-from resources.selenium_data import SeleniumData
+from pages.slider import Slider
+from pages.web_table import WebTable
 from pages.login import LoginPage
 from pages.dropdown import DropDownPage
 from pages.date_picker import DatePicker
 from pages.file_upload import FileUpload
-from pages.slider import Slider
-from pages.web_table import WebTable
+from resources.selenium_data import SeleniumData
 
 
 def pytest_addoption(parser):
@@ -30,49 +29,57 @@ def browser(request) -> str:
     return request.config.getoption("--on-browser")
 
 @fixture
-def driver(browser) -> Generator[WebDriver | WebDriver, Any, None]:
+def get_driver(browser) -> Generator[WebDriver | WebDriver, Any, None]:
     """
     This fixture initializes a WebDriver for the specified browser,
      and ensures proper cleanup after the test execution by quitting the driver.
     """
     if browser == "chrome":
-        driver = webdriver.Chrome(service=ChromeService())
+        options = Options()
+        # Important options for CI
+        options.add_argument("--headless=new")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+
+        driver = webdriver.Chrome()
     elif browser == "firefox":
-        driver = webdriver.Firefox(service=FirefoxService())
+        driver = webdriver.Firefox()
     else:
         raise ValueError(f"Unsupported browser: {browser}")
     yield driver
     driver.quit()
 
 @fixture
-def slider(driver :WebDriver) -> Slider:
+def slider(get_driver: WebDriver) -> Slider:
     """Instantiate Slider class."""
-    return Slider(driver)
+    return Slider(get_driver)
 
 @fixture
-def drop_down(driver :WebDriver) -> DropDownPage:
+def drop_down(get_driver: WebDriver) -> DropDownPage:
     """Instantiate DropDownPage class."""
-    return DropDownPage(driver)
+    return DropDownPage(get_driver)
 
 @fixture
-def file_upload(driver :WebDriver) -> FileUpload:
+def file_upload(get_driver: WebDriver) -> FileUpload:
     """Instantiate FileUpload class."""
-    return FileUpload(driver)
+    return FileUpload(get_driver)
 
 @fixture
-def date_picker(driver :WebDriver) -> DatePicker:
+def date_picker(get_driver: WebDriver) -> DatePicker:
     """Instantiate DatePicker class."""
-    return DatePicker(driver)
+    return DatePicker(get_driver)
 
 @fixture
-def web_table(driver :WebDriver) -> WebTable:
+def web_table(get_driver: WebDriver) -> WebTable:
     """Instantiate WebTable class."""
-    return WebTable(driver)
+    return WebTable(get_driver)
 
 @fixture
-def login(driver :WebDriver) -> LoginPage:
+def login(get_driver: WebDriver) -> LoginPage:
     """Instantiate LoginPage class."""
-    return LoginPage(driver)
+    return LoginPage(get_driver)
 
 @fixture(params=SeleniumData.calendar_months, ids=lambda c: c)
 def months(request) -> str:

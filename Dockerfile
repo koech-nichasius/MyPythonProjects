@@ -25,9 +25,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --upgrade pip
 
-COPY requirements .
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements
+RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /Selenium
 
