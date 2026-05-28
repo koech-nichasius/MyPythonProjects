@@ -38,7 +38,6 @@ jobs:
         run: |
           mkdir -p results
           pytest -v tests/ -n auto --dist=loadscope \
-            --tracing=retain-on-failure \
             --junitxml=results/results.xml \
             --html=results/report.html \
             --self-contained-html
@@ -59,19 +58,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: test-output
-          path: test-results
+          path: results
   
       - name: Publish Test Results
         if: ${{ always() }}
-        uses: EnricoMi/publish-unit-test-result-action@v2
+        uses: EnricoMi/publish-unit-result-action@v2
         with:
-          files: test-results/**/*.xml
-  
+          files: results/**/*.xml
+            
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:
           name: final-reports
-          path: test-results/
+          path: results/
               
   cleanup:
     runs-on: ubuntu-latest
