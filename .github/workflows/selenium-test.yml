@@ -55,7 +55,6 @@ jobs:
 
       - name: Run tests
         run: |
-          echo "Running tests on ${{ github.event.inputs.browser }}"
           pytest tests/ -v tests/
 
       - name: Upload raw test data
