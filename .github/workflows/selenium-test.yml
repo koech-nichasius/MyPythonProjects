@@ -47,27 +47,26 @@ jobs:
   report:
     runs-on: ubuntu-latest
     needs: test
-
+  
     steps:
       - name: Download test results
         uses: actions/download-artifact@v4
         with:
           name: test-output
-
-      - name: Upload reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: final-reports
-          path: reports/
-          
-      # Show results directly in GitHub UI
+          path: test-results
+  
       - name: Publish Test Results
         if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          files: |
-            test-results/**/*.xml
-            
+          files: test-results/**/*.xml
+  
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-reports
+          path: test-results/
+              
   cleanup:
     runs-on: ubuntu-latest
     needs: report
